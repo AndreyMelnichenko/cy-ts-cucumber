@@ -1,28 +1,25 @@
-name: Cypress Tests with Dependency and Artifact Caching
+name: Node.js CI
 
-on: [push]
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  # install:
-  # ....
-  cypress-run:
+  build:
+
     runs-on: ubuntu-latest
-    container: cypress/browsers:node16.16.0-chrome105-ff99-edge
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Download the build folders
-        uses: actions/download-artifact@v2
-        with:
-          name: build
-          path: build
-
-      # Install NPM dependencies, cache them correctly
-      # and run all Cypress tests
-      - name: Cypress run
-        uses: cypress-io/github-action@v4.2.0 # use the explicit version number
-        with:
-          # Specify Browser since container image is compile with Firefox
-          browser: chrome
-          build: yarn build
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm test
