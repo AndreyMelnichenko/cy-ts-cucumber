@@ -1,0 +1,15 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node-terminal",
+            "request": "launch",
+            "name": "CY-DEBUG",
+            "skipFiles": ["<node_internals>/**"],
+            "command": "./node_modules/.bin/cypress run -e TAGS='@debug' --browser chrome",
+            "env": {
+                "SHA":"46ef8ca8788d6e9d97c8d673857e964681df1895"
+            }
+        }
+    ]
+}
